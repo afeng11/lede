@@ -15,10 +15,10 @@
 	};
 
 	aliases {
-		led-boot = &status;
-		led-failsafe = &status;
-		led-running = &status;
-		led-upgrade = &status;
+		led-boot = &led_power;
+		led-failsafe = &led_power;
+		led-running = &led_power;
+		led-upgrade = &led_power;
 		label-mac-device = &gmac0;
 	};
 
@@ -87,10 +87,10 @@
 	leds {
 		compatible = "gpio-leds";
 
-		status: status {
-			label = "green:status";
+		led_power: power {
+			label = "green:power";
 			gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
-			default-state = "keep";
+			default-state = "on";
 		};
 
 		wlan2g {
@@ -121,13 +121,16 @@
 	status = "okay";
 };
 
+&cryptobam {
+	status = "okay";
+};
+
 &blsp1_spi1 {
 	status = "okay";
 
 	pinctrl-0 = <&spi0_pins>;
 	pinctrl-names = "default";
-	cs-gpios = <&tlmm 54 GPIO_ACTIVE_HIGH>,
-		   <&tlmm 4 GPIO_ACTIVE_HIGH>;
+	cs-gpios = <&tlmm 54 GPIO_ACTIVE_HIGH>, <&tlmm 4 GPIO_ACTIVE_HIGH>;
 
 	flash@0 {
 		reg = <0>;
@@ -170,13 +173,13 @@
 			};
 
 			partition@e0000 {
-				label = "APPSBLENV";
+				label = "APPSBLENV"; /* uboot env*/
 				reg = <0xe0000 0x10000>;
 				read-only;
 			};
 
 			partition@f0000 {
-				label = "APPSBL";
+				label = "APPSBL"; /* uboot */
 				reg = <0xf0000 0x80000>;
 				read-only;
 			};
@@ -224,16 +227,16 @@
 	status = "okay";
 };
 
-&cryptobam {
-	status = "okay";
-};
-
 &qpic_bam {
 	status = "okay";
 };
 
+
 &mdio {
 	status = "okay";
+	pinctrl-0 = <&mdio_pins>;
+	pinctrl-names = "default";
+	phy-reset-gpio = <&tlmm 62 GPIO_ACTIVE_HIGH>;
 };
 
 &tlmm {
@@ -250,7 +253,7 @@
 			bias-pull-up;
 		};
 	};
-
+	
 	enable-usb-power {
 		gpio-hog;
 		gpios = <1 GPIO_ACTIVE_HIGH>;
@@ -282,18 +285,31 @@
 			output-high;
 		};
 	};
+
+	i2c_0_pins: i2c_0_pinmux {
+		mux {
+			function = "blsp_i2c0";
+			pins = "gpio58", "gpio59";
+			bias-disable;
+		};
+	};
+
+	reset_pinmux {
+		mux {
+			pins = "gpio63";
+			bias-pull-up;
+		};
+	};
 };
 
-&ethphy3 {
-	qcom,single-led-1000;
-	qcom,single-led-100;
-	qcom,single-led-10;
+&swport4 {
+	status = "okay";
+	label = "eth1";
 };
 
-&ethphy4 {
-	qcom,single-led-1000;
-	qcom,single-led-100;
-	qcom,single-led-10;
+&swport5 {
+	status = "okay";
+	label = "eth2";
 };
 
 &usb3_ss_phy {
@@ -308,7 +324,11 @@
 	status = "okay";
 };
 
-&vqmmc {
+&gmac {
+	status = "okay";
+};
+
+&switch {
 	status = "okay";
 };
 
