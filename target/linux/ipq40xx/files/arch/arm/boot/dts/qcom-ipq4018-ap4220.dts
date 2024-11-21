@@ -323,7 +323,7 @@
 	status = "okay";
 };
 
-&gmac {
+&gmac0 {
 	status = "okay";
 };
 
