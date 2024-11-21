@@ -301,16 +301,6 @@
 	};
 };
 
-&swport4 {
-	status = "okay";
-	label = "eth1";
-};
-
-&swport5 {
-	status = "okay";
-	label = "eth2";
-};
-
 &usb3_ss_phy {
 	status = "okay";
 };
