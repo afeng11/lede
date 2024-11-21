@@ -88,7 +88,7 @@
 
 		led_power: power {
 			label = "green:power";
-			gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
+			gpios = <&tlmm 5 GPIO_ACTIVE_LOW>;
 			default-state = "on";
 		};
 
@@ -100,7 +100,7 @@
 
 		wlan5g {
 			label = "green:wlan5g";
-			gpios = <&tlmm 5 GPIO_ACTIVE_LOW>;
+			gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
 			linux,default-trigger = "phy1tpt";
 		};
 	};
